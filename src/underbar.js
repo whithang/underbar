@@ -200,6 +200,7 @@
   _.every = function(collection, iterator) {
     return _.reduce(collection, function(allTrue, item){
       //if true, do nothing, if false, return false
+      //if all are true, return true
       if (!allTrue){
         return false;
       }
@@ -214,8 +215,21 @@
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
+  // TIP: There's a very clever way to re-use every() here.
   _.some = function(collection, iterator) {
-    // TIP: There's a very clever way to re-use every() here.
+    return _.reduce(collection, function(allTrue, item){
+      //if any = true, return true
+      if (typeof iterator !== 'function'){
+        iterator = function(item) {
+          return Boolean(item);
+        };
+      }
+      if (allTrue){
+        return true;
+      } else {
+        return Boolean(iterator(item));
+      }
+    }, false);
   };
 
 
