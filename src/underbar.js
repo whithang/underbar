@@ -314,6 +314,15 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var answerObj = {};
+
+    return function(){
+      var index = arguments[1];
+      if (answerObj[index] === undefined){
+        answerObj[index] = func.apply(this, arguments);
+      }
+      return answerObj[index];
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
