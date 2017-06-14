@@ -374,9 +374,15 @@
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
     var newArray = [];
-    _.each(collection, function(item, index){
-      newArray[index] = functionOrKey.apply(item);
-    });
+    if (typeof functionOrKey === 'string'){
+      _.each(collection, function(item, index){
+        newArray[index] = item[functionOrKey]();
+      });
+    } else {
+      _.each(collection, function(item, index){
+        newArray[index] = functionOrKey.apply(item);
+      });
+    }
     return newArray;
   };
 
