@@ -57,8 +57,8 @@
         iterator(collection[i], parseInt(i), collection);
       }
     } else {
-    for (var i in collection){
-      iterator(collection[i], i, collection);
+      for (var i in collection){
+        iterator(collection[i], i, collection);
       }
     }
   };
@@ -391,6 +391,29 @@
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    var newObj = {};
+    if (collection.propertyIsEnumerable(iterator)){
+      if (typeof iterator === 'string'){
+        var isNum = _.every(collection[iterator].values, function(item, index){
+          return !isNaN(item);});
+        if (isNum){
+            collection.sort(function(a, b) {
+              return a[1] - b[1];
+            });
+        } else {
+          collection.sort();
+        }
+      }
+    } else if (typeof iterator === 'function'){
+      collection.sort(function(a, b){
+        return iterator(a) - iterator(b);
+      });
+    } else {
+      collection.sort(function(a, b){
+        return a[iterator] - b[iterator];
+      });
+    }
+    return collection;
   };
 
   // Zip together two or more arrays with elements of the same index
